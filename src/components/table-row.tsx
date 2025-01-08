@@ -23,7 +23,7 @@ export function TableRowComponent({ row }: TableRowProps) {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-4 p-4 border-b hover:bg-gray-50">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border-b hover:bg-gray-50">
       <div className="flex items-center gap-2">
         <Play className="h-4 w-4 text-gray-400" />
         <span className="text-sm">{row.timestamp}</span>
@@ -41,7 +41,7 @@ export function TableRowComponent({ row }: TableRowProps) {
         </span>
       </div>
       <div className="flex items-center gap-2">
-        <div className="h-6 w-6 rounded-full overflow-hidden">
+        <div className="h-6 w-6 rounded-full overflow-hidden flex-shrink-0">
           <Image
             src={row.enrichment.icon}
             alt={row.enrichment.company}
@@ -49,9 +49,9 @@ export function TableRowComponent({ row }: TableRowProps) {
             height={24}
           />
         </div>
-        <div className="flex flex-col">
-          <span className="text-sm font-medium">{row.enrichment.company}</span>
-          <span className="text-xs text-gray-500">{row.enrichment.description}</span>
+        <div className="flex flex-col min-w-0">
+          <span className="text-sm font-medium truncate">{row.enrichment.company}</span>
+          <span className="text-xs text-gray-500 truncate">{row.enrichment.description}</span>
         </div>
       </div>
     </div>

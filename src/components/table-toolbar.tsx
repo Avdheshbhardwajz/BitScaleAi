@@ -1,25 +1,29 @@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Filter, SortAsc, Sparkles } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
+import { FilterPopover } from "./filters/filter-popover"
+import { SortPopover } from "./filters/sort-popover"
 
 interface TableToolbarProps {
-  onFilterToggle: () => void
-  onSortToggle: () => void
+  onFilterChange: (value: string) => void
+  onSortChange: (value: string) => void
+  onSearch: (value: string) => void
   view: {
     rowCount: number
     columnCount: number
   }
 }
 
-export function TableToolbar({ onFilterToggle, onSortToggle, view }: TableToolbarProps) {
+export function TableToolbar({ onFilterChange, onSortChange, onSearch, view }: TableToolbarProps) {
   return (
-    <div className="flex items-center justify-between p-4 gap-4">
-      <div className="flex items-center gap-4 flex-1">
-        <div className="relative w-full max-w-sm">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+        <div className="relative w-full sm:max-w-sm">
           <Input 
             type="search" 
             placeholder="Search" 
             className="pl-8"
+            onChange={(e) => onSearch(e.target.value)}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -36,29 +40,15 @@ export function TableToolbar({ onFilterToggle, onSortToggle, view }: TableToolba
             />
           </svg>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">{view.rowCount}/1 Row</span>
-          <span className="text-sm text-gray-500">{view.columnCount}/3 Column</span>
+        <div className="flex items-center gap-2 text-sm text-gray-500">
+          <span>{view.rowCount} Row{view.rowCount !== 1 ? 's' : ''}</span>
+          <span>{view.columnCount} Column{view.columnCount !== 1 ? 's' : ''}</span>
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={onFilterToggle}
-        >
-          <Filter className="h-4 w-4 mr-2" />
-          Filter
-        </Button>
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={onSortToggle}
-        >
-          <SortAsc className="h-4 w-4 mr-2" />
-          Sort
-        </Button>
-        <Button variant="default" size="sm">
+      <div className="flex items-center gap-2 w-full sm:w-auto">
+        <FilterPopover column="Status" onFilterChange={onFilterChange} />
+        <SortPopover onSortChange={onSortChange} />
+        <Button variant="default" size="sm" className="w-full sm:w-auto">
           <Sparkles className="h-4 w-4 mr-2" />
           Enrich
         </Button>
@@ -66,4 +56,3 @@ export function TableToolbar({ onFilterToggle, onSortToggle, view }: TableToolba
     </div>
   )
 }
-
